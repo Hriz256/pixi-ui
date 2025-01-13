@@ -77,13 +77,6 @@ export class Control extends Container {
   /**
    * Scaling factor by which width and height are multiplied
    */
-  protected _invertScaleRatio: number = 1;
-
-  protected _childrenInvertScaleRatio: number = 1;
-
-  /**
-   * Scaling factor by which width and height are multiplied
-   */
   protected _scaleSize: number = 1;
 
   /**
@@ -651,7 +644,6 @@ export class Control extends Container {
     }
 
     this._width = value / (this._adaptWidthToParent ? 1 : this._scaleRatio) / this._scaleSize;
-    this._width /= this._adaptWidthToParent ? 1 : this._invertScaleRatio;
     this._w = value;
 
     this.updateWidth();
@@ -733,7 +725,7 @@ export class Control extends Container {
   }
 
   public get minWidth() {
-    return this._minWidth * this._scaleRatio * this._invertScaleRatio;
+    return this._minWidth * this._scaleRatio;
   }
 
   public set minWidth(value: number) {
@@ -746,7 +738,7 @@ export class Control extends Container {
   }
 
   public get maxWidth() {
-    return this._maxWidth * this._scaleRatio * this._invertScaleRatio;
+    return this._maxWidth * this._scaleRatio;
   }
 
   public set maxWidth(value: number) {
@@ -803,7 +795,6 @@ export class Control extends Container {
     }
 
     this._height = value / (this._adaptHeightToParent ? 1 : this._scaleRatio) / this._scaleSize;
-    this._height /= this._adaptHeightToParent ? 1 : this._invertScaleRatio;
     this._h = value;
 
     this.updateHeight();
@@ -812,7 +803,7 @@ export class Control extends Container {
   }
 
   public get minHeight() {
-    return this._minHeight * this._scaleRatio * this._invertScaleRatio;
+    return this._minHeight * this._scaleRatio;
   }
 
   public set minHeight(value: number) {
@@ -825,7 +816,7 @@ export class Control extends Container {
   }
 
   public get maxHeight() {
-    return this._maxHeight * this._scaleRatio * this._invertScaleRatio;
+    return this._maxHeight * this._scaleRatio;
   }
 
   public set maxHeight(value: number) {
@@ -842,55 +833,6 @@ export class Control extends Container {
 
     if (this._maskAutoScale && this._mask) {
       (this._mask as Container).height = this.h;
-    }
-  }
-
-  public get invertScaleRatio() {
-    return this._invertScaleRatio;
-  }
-
-  /**
-   * It passes the scale on to all its children, including itself
-   */
-  public set invertScaleRatio(value: number) {
-    if (this._invertScaleRatio === value) {
-      return;
-    }
-
-    this._childrenInvertScaleRatio = value;
-    this._invertScaleRatio = value;
-    this._isDirty = true;
-
-    this.onScaleUpdate(this._scaleRatio * this._invertScaleRatio);
-    this.updateWidth();
-    this.updateHeight();
-
-    for (const child of this.children) {
-      if (child instanceof Control) {
-        child.invertScaleRatio = this._invertScaleRatio;
-      }
-    }
-  }
-
-  public get childrenInvertScale() {
-    return this._childrenInvertScaleRatio;
-  }
-
-  /**
-   * It passes the scale on to all its children, without itself
-   */
-  public set childrenInvertScale(value: number) {
-    if (this._childrenInvertScaleRatio === value) {
-      return;
-    }
-
-    this._childrenInvertScaleRatio = value;
-    this._isDirty = true;
-
-    for (const child of this.children) {
-      if (child instanceof Control) {
-        child.invertScaleRatio = value;
-      }
     }
   }
 
@@ -924,7 +866,7 @@ export class Control extends Container {
     this._scaleRatio = value;
     this._isDirty = true;
 
-    this.onScaleUpdate(this._scaleRatio * this._invertScaleRatio);
+    this.onScaleUpdate(this._scaleRatio);
     this.updateWidth();
     this.updateHeight();
 
@@ -1036,7 +978,7 @@ export class Control extends Container {
   }
 
   public get paddingLeft() {
-    return this._padding[0] * this._scaleRatio * this._invertScaleRatio;
+    return this._padding[0] * this._scaleRatio;
   }
 
   public set paddingLeft(value: number) {
@@ -1049,7 +991,7 @@ export class Control extends Container {
   }
 
   public get paddingTop() {
-    return this._padding[1] * this._scaleRatio * this._invertScaleRatio;
+    return this._padding[1] * this._scaleRatio;
   }
 
   public set paddingTop(value: number) {
@@ -1062,7 +1004,7 @@ export class Control extends Container {
   }
 
   public get paddingRight() {
-    return this._padding[2] * this._scaleRatio * this._invertScaleRatio;
+    return this._padding[2] * this._scaleRatio;
   }
 
   public set paddingRight(value: number) {
@@ -1075,7 +1017,7 @@ export class Control extends Container {
   }
 
   public get paddingBottom() {
-    return this._padding[3] * this._scaleRatio * this._invertScaleRatio;
+    return this._padding[3] * this._scaleRatio;
   }
 
   public set paddingBottom(value: number) {
@@ -1088,7 +1030,7 @@ export class Control extends Container {
   }
 
   public get x() {
-    return this._x * this._scaleRatio * this._invertScaleRatio;
+    return this._x * this._scaleRatio;
   }
 
   public set x(value: number) {
@@ -1103,7 +1045,7 @@ export class Control extends Container {
   }
 
   public get y() {
-    return this._y * this._scaleRatio * this._invertScaleRatio;
+    return this._y * this._scaleRatio;
   }
 
   public set y(value: number) {
@@ -1271,10 +1213,9 @@ export class Control extends Container {
       const parent = this.parent as Control;
 
       this.scaleRatio = parent?.childrenScaleRatio || 1;
-      this.invertScaleRatio = parent?.childrenInvertScale || 1;
 
-      let w = this._width * this._scaleSize * this._scaleRatio * this._invertScaleRatio;
-      let h = this._height * this._scaleSize * this._scaleRatio * this._invertScaleRatio;
+      let w = this._width * this._scaleSize * this._scaleRatio;
+      let h = this._height * this._scaleSize * this._scaleRatio;
 
       if (this._adaptWidthToParent) {
         w = parent.w * this._widthPercent - parent.paddingLeft - parent.paddingRight || 0;
