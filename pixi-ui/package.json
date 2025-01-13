@@ -1,0 +1,17 @@
+{
+  "name": "pixi-ui",
+  "version": "1.0.0",
+  "description": "UI library",
+  "main": "main.tsx",
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx,css}": [
+      "eslint"
+    ]
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "tweedle.js": "^2.0.1",
+    "pixi.js": "7.2.4"
+  }
+}

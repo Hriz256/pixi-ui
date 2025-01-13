@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noResolve": false,
+    "resolveJsonModule": true,
+    "noImplicitAny": false,
+    "sourceMap": true,
+    "preserveConstEnums": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "baseUrl": "src",
+    "lib": ["dom", "es6", "DOM", "DOM.Iterable"],
+    "skipLibCheck": true,
+    "types": ["reflect-metadata", "node"],
+    "jsx": "react-jsx",
+  },
+  "include": ["src", "editor"],
+  "exclude": ["node_modules"],
+  "typedocOptions": {
+    "entryPoints": ["./src/main.ts"],
+    "out": "docs",
+    "plugin": ["typedoc-theme-hierarchy"],
+    "theme": "hierarchy"
+    // "umlClassDiagram": {
+    //   "type": "detailed",
+    //   "location": "local",
+    //   "format": "svg"
+    // }
+  }
+}
